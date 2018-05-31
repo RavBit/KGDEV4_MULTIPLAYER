@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 2657e84f4ccb3174888f36c929cbd004
+timeCreated: 1491598278
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: FTY SPEEDY CASUAL NCV
+  fontNames:
+  - FTY SPEEDY CASUAL NCV
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
