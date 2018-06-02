@@ -51,8 +51,9 @@ public class PlayerShoot : NetworkBehaviour
             {
                 chargecounter = 0;
                 return;
-            }     
-            CmdShoot(chargecounter);
+            }
+            Debug.Log("Shoot: " + chargecounter);
+            Shoot(chargecounter);
             chargecounter = 0;
         }
         //}
@@ -69,21 +70,25 @@ public class PlayerShoot : NetworkBehaviour
         }
         GetComponentInChildren<PlayerInterface>().AdjustNeedle(chargecounter);
     }
-    [Command]
-    void CmdShoot(float force)
+    [Client]
+    void Shoot(float force)
     {
         RaycastHit _hit;
-        RpcShoot(force);
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, 10, mask))
         {
-            //if (_hit.collider.tag == "Player")
-                //CmdPlayerShot(_hit.collider.name, currentWeapon.damage);
+            if (_hit.collider.tag == "Player")
+            {
+                Debug.Log("Player hit: " + _hit.collider.name);
+                CmdPlayerShot(_hit.collider.name, currentWeapon.damage);
+            }
         }
     }
 
-    [ClientRpc]
-    void RpcShoot(float force)
+    [Command]
+    void CmdPlayerShot(string player, int force)
     {
+        Player Player = GameManager.GetPlayer(player);
+        Player.TakeDamage(force);
         GameObject truckin = NetworkManager.Instantiate(truck, transform.position + 1f * transform.forward, Quaternion.Euler(new Vector3(270, transform.eulerAngles.y, 0)));
         truckin.GetComponent<Truck_Settings>().SetForce((int)(force * 200), transform.name);
         ResetCharge();

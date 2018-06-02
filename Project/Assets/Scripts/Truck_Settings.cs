@@ -39,7 +39,7 @@ public class Truck_Settings : NetworkBehaviour {
     void Takedamage(string id)
     {
         Player _player = GameManager.GetPlayer(id);
-        _player.RpcTakeDamage(damage, transform.name);
+        //_player.RpcTakeDamage(damage, transform.name);
     }
 
 }

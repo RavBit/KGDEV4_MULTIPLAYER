@@ -24,6 +24,13 @@ public class Player : NetworkBehaviour {
     [SyncVar]
     private float currentHealth;
 
+    [SyncVar]
+    public Class currentClass = Class.Hunter;
+
+    public Renderer rend;
+    [SyncVar]
+    public Color objectColor;
+
     private Canvas deathScreen;
     private Text deathTextmessage;
 
@@ -34,16 +41,26 @@ public class Player : NetworkBehaviour {
     {
         deathTextmessage = GetComponentInChildren<Text>();
         deathScreen = GetComponentInChildren<Canvas>();
+        rend = GetComponent<Renderer>();
         wasEnabled = new bool[disableOnDeath.Length];
         for (int i = 0; i < wasEnabled.Length; i++)
         {
             wasEnabled[i] = disableOnDeath[i].enabled;
+        }
+        objectColor = Color.red;
+        if (isServer)
+        {
+            objectColor = Color.green;
+            currentClass = Class.Chaser;
         }
         SetDefaults();
     }
 
     void Update()
     {
+        rend = GetComponent<Renderer>();
+        rend.material.shader = Shader.Find("_Color");
+        rend.material.SetColor("_Color", objectColor);
         if (!isLocalPlayer)
             return;
     }
@@ -53,6 +70,8 @@ public class Player : NetworkBehaviour {
         isDead = false;
         currentHealth = maxHealth;
         GetComponentInChildren<PlayerInterface>().AdjustHealth(currentHealth / 2000f);
+        rend.material.shader = Shader.Find("_Color");
+        rend.material.SetColor("_Color", objectColor);
         for (int i = 0; i < disableOnDeath.Length; i++)
         {
             disableOnDeath[i].enabled = wasEnabled[i];
@@ -63,16 +82,17 @@ public class Player : NetworkBehaviour {
             _col.enabled = true;
     }
     
-    [ClientRpc]
-    public void RpcTakeDamage(int _amount, string _hitby)
+    public void TakeDamage(int _amount)
     {
         if (_isDead)
             return;
         currentHealth -= _amount;
+        Debug.Log("TOOK DAMAGE : " + _amount);
+        Debug.Log("Was hit and took  " + _amount + " damage");
         GetComponentInChildren<PlayerInterface>().AdjustHealth(currentHealth / 2000f);
         //MessageCenter.Message(transform.name + " now lost health. Now has: " + currentHealth);
-        if (currentHealth <= 0)
-            Die(_hitby);
+        //if (currentHealth <= 0)
+        //    Die(_hitby);
     }
     private void Die(string _hitby)
     {
