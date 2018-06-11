@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class WeaponManager : NetworkBehaviour {
 
     [SerializeField]
-    private Transform weaponHolder;
+    public Transform weaponHolder;
     [SerializeField]
     private PlayerWeapon primaryWeapon;
 

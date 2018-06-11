@@ -19,7 +19,6 @@ public class PlayerInterface : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         PauseMenu.isOn = false;
-        name.text = "You are: " + GetComponentInParent<Player>().gameObject.name;
 	}
     public void AdjustNeedle(float force)
     {
@@ -35,6 +34,7 @@ public class PlayerInterface : MonoBehaviour {
         {
             TogglePauseMenu();
         }
+        name.text = "You are: " + GetComponentInParent<Player>().gameObject.name + " Currently: " + GetComponentInParent<Player>()._hunter;
     }
     void TogglePauseMenu()
     {

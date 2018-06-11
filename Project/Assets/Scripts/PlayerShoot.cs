@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+//delete later
+using UnityEngine.UI;
 
 [RequireComponent(typeof(WeaponManager))]
 public class PlayerShoot : NetworkBehaviour
 {
+    public Text Debugtext;
 
-
+    [SerializeField]
+    [SyncVar]
     private PlayerWeapon currentWeapon;
 
     [SerializeField]
@@ -33,70 +37,56 @@ public class PlayerShoot : NetworkBehaviour
             this.enabled = false;
         }
         weaponManager = GetComponent<WeaponManager>();
-
+        currentWeapon = weaponManager.GetCurrentWeapon();
+        EventManager.WeaponCheck += setCurrentWeapon;
     }
     void Update()
     {
+        currentWeapon = weaponManager.GetCurrentWeapon();
         if (PauseMenu.isOn)
             return;
         if (Input.GetButton("Fire1"))
         {
-            chargecounter = chargecounter + 0.01f;
-            if (chargecounter > 1)
-                return;
+            Shoot();
+            Debug.Log("SHOOT");
         }
-        if (Input.GetButtonUp("Fire1"))
+        if(GetComponent<Player>()._hunter == false)
         {
-            if (chargecounter < 0.2)
-            {
-                chargecounter = 0;
-                return;
-            }
-            Debug.Log("Shoot: " + chargecounter);
-            Shoot(chargecounter);
-            chargecounter = 0;
+            GetComponent<WeaponManager>().weaponHolder.gameObject.SetActive(false);
         }
-        //}
-        else
+        if (GetComponent<Player>()._hunter == true)
         {
-            /*if (Input.GetButtonDown("Fire1"))
-            {
-                InvokeRepeating("Shoot", 0f, 1f/currentWeapon.fireRate);
-            }
-            else if (Input.GetButtonUp("Fire1"))
-            {
-                CancelInvoke("Shoot");
-            }*/
+            GetComponent<WeaponManager>().weaponHolder.gameObject.SetActive(true);
         }
-        GetComponentInChildren<PlayerInterface>().AdjustNeedle(chargecounter);
     }
     [Client]
-    void Shoot(float force)
+    void Shoot()
     {
+        if (!GetComponent<Player>()._hunter)
+            return;
         RaycastHit _hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, 10, mask))
         {
             if (_hit.collider.tag == "Player")
             {
-                Debug.Log("Player hit: " + _hit.collider.name);
+                Debug.Log("Player hit: " + _hit.collider.name + " / HAS ROLE :" + _hit.collider.GetComponent<Player>().CurrentClass);
+                Debugtext.text = "Player hit: " + _hit.collider.name + " / HAS ROLE :" + _hit.collider.GetComponent<Player>().CurrentClass;
                 CmdPlayerShot(_hit.collider.name, currentWeapon.damage);
             }
         }
     }
 
-    [Command]
-    void CmdPlayerShot(string player, int force)
+    private void setCurrentWeapon()
     {
-        Player Player = GameManager.GetPlayer(player);
-        Player.TakeDamage(force);
-        GameObject truckin = NetworkManager.Instantiate(truck, transform.position + 1f * transform.forward, Quaternion.Euler(new Vector3(270, transform.eulerAngles.y, 0)));
-        truckin.GetComponent<Truck_Settings>().SetForce((int)(force * 200), transform.name);
-        ResetCharge();
+        currentWeapon = weaponManager.GetCurrentWeapon();
+    }
+    [Command]
+    void CmdPlayerShot(string player, int damage)
+    {
+        Debug.Log(player + " has been shot");
+        Player _player = GameManager.GetPlayer(player);
+        _player.RpcTakeDamage(damage, GetComponent<Player>().name);
     }
 
-    void ResetCharge()
-    {
-        chargecounter = 0;
-    }
 }
 

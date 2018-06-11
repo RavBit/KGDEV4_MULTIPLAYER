@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using StateMachine;
 using System;
-public class FirstState : State<State_Manager>
+public class PlayState : State<State_Manager>
 {
-    private static FirstState _instance;
+    private static PlayState _instance;
 
-    private FirstState()
+    private PlayState()
     {
         if (_instance != null)
         {
@@ -17,12 +17,12 @@ public class FirstState : State<State_Manager>
         _instance = this;
     }
 
-    public static FirstState Instance
+    public static PlayState Instance
     {
         get {
             if(_instance == null)
             {
-                new FirstState();
+                new PlayState();
             }
             return _instance;
         }
@@ -30,25 +30,31 @@ public class FirstState : State<State_Manager>
     }
     public override void EnterState(State_Manager _owner)
     {
-        seconds = 12;
-        Debug.Log("Entering First State");
+        seconds = 10;
+        if (EndState.Instance.SecondTurn == false)
+        {
+            _owner.SetRoles();
+        }
+        Debug.Log("Entering Play State");
     }
 
     public override void ExitState(State_Manager _owner)
     {
-        Debug.Log("Exiting First State");
+        Debug.Log("Exiting Play State");
     }
 
     public override string ReturnText()
     {
-        return ("Time to to take position: " + seconds);
+        return ("You are a: XXX / Time left: ");
     }
 
     public override void UpdateState(State_Manager _owner)
     {
-        if (!_owner.switchState)
+        if(seconds < 0)
         {
-            _owner.stateMachine.ChangeState(SecondState.Instance);
+            _owner.stateMachine.ChangeState(EndState.Instance);
+            //TODO LET THEM SWITCH SIDES
+            //_owner.SetSwitchSides();
         }
     }
 }

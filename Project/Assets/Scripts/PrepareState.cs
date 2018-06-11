@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using StateMachine;
 using System;
-public class PlayerState : State<State_Manager>
+public class PrepareState : State<State_Manager>
 {
-    private static PlayerState _instance;
+    private static PrepareState _instance;
 
-    private PlayerState()
+    private PrepareState()
     {
         if (_instance != null)
         {
@@ -17,11 +17,11 @@ public class PlayerState : State<State_Manager>
         _instance = this;
     }
 
-    public static PlayerState Instance {
+    public static PrepareState Instance {
         get {
             if (_instance == null)
             {
-                new PlayerState();
+                new PrepareState();
             }
             return _instance;
         }
@@ -29,7 +29,11 @@ public class PlayerState : State<State_Manager>
     }
     public override void EnterState(State_Manager _owner)
     {
-        seconds = 20;
+        seconds = 10;
+        if (EndState.Instance.SecondTurn)
+        {
+            _owner.SwitchRoles();
+        }
         Debug.Log("Entering Player State");
     }
 
@@ -40,10 +44,13 @@ public class PlayerState : State<State_Manager>
 
     public override string ReturnText()
     {
-        return ("Time to to take position: " + seconds);
+        return ("Time to to take position: ");
     }
     public override void UpdateState(State_Manager _owner)
     {
-
+        if (seconds < 0)
+        {
+            _owner.stateMachine.ChangeState(PlayState.Instance);
+        }
     }
 }

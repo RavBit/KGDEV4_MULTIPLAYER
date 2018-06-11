@@ -46,7 +46,7 @@ public class SecondState : State<State_Manager>
     {
         if(_owner.switchState)
         {
-            _owner.stateMachine.ChangeState(FirstState.Instance);
+            _owner.stateMachine.ChangeState(PlayState.Instance);
         }
     }
 }

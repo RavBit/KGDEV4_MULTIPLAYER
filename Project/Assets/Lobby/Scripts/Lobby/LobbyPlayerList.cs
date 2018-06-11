@@ -40,6 +40,7 @@ namespace Prototype.NetworkLobby
 
         public void AddPlayer(LobbyPlayer player)
         {
+            player.playerName = AppManager.instance.User.username;
             if (_players.Contains(player))
                 return;
 

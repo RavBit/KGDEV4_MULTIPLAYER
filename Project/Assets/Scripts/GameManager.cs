@@ -30,10 +30,18 @@ public class GameManager : MonoBehaviour {
     {
         players.Remove(_playerID);
     }
-
+    public Dictionary<string, Player> GetPlayers()
+    {
+        return players;
+    }
     public static Player GetPlayer(string _playerID)
     {
         return players[_playerID];
+    }
+
+    public static void StartStates()
+    {
+        
     }
     #endregion
 
@@ -48,6 +56,7 @@ public class GameManager : MonoBehaviour {
 
 public enum Class
 {
+    None,
     Hunter,
     Chaser
 }

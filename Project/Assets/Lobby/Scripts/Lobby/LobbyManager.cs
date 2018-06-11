@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using System.Collections;
-
+using StateMachine;
 
 namespace Prototype.NetworkLobby
 {
@@ -279,7 +279,8 @@ namespace Prototype.NetworkLobby
 
             LobbyPlayer newPlayer = obj.GetComponent<LobbyPlayer>();
             newPlayer.ToggleJoinButton(numPlayers + 1 >= minPlayers);
-
+            newPlayer.nameInput.text = AppManager.instance.User.username;
+            newPlayer.nameInput.interactable = false;
 
             for (int i = 0; i < lobbySlots.Length; ++i)
             {
@@ -416,6 +417,17 @@ namespace Prototype.NetworkLobby
         {
             ChangeTo(mainMenuPanel);
             infoPanel.Display("Cient error : " + (errorCode == 6 ? "timeout" : errorCode.ToString()), "Close", null);
+        }
+        public override void OnServerConnect(NetworkConnection connection)
+        {
+            Invoke("test", 3);
+            //Change the text to show the connection and the client's ID
+            //m_Text.text = "Client " + connection.connectionId + " Connected!";
+        }
+
+        void test()
+        {
+           
         }
     }
 }

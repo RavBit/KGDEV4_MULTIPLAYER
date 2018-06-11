@@ -34,9 +34,22 @@ public class PlayerSetup : NetworkBehaviour {
     public override void OnStartClient()
     {
         base.OnStartClient();
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartClient();
+        RegisterPlayer();
+    }
+
+    [Client]
+    void RegisterPlayer()
+    {
         string _netID = GetComponent<NetworkIdentity>().netId.ToString();
         Player _player = GetComponent<Player>();
-        GameManager.RegisterPlayer(_netID, _player);
+        GameManager.RegisterPlayer(AppManager.instance.User.username, _player);
+
+        WebManager.instance.StartCoroutine("SetScore", 100);
     }
     void DisableComponents()
     {

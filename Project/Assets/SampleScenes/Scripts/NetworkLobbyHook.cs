@@ -9,7 +9,6 @@ public class NetworkLobbyHook : LobbyHook
     {
         LobbyPlayer lobby = lobbyPlayer.GetComponent<LobbyPlayer>();
         NetworkSpaceship spaceship = gamePlayer.GetComponent<NetworkSpaceship>();
-
         spaceship.name = lobby.name;
         spaceship.color = lobby.playerColor;
         spaceship.score = 0;
