@@ -34,6 +34,7 @@ public class PlayerInterface : MonoBehaviour {
         {
             TogglePauseMenu();
         }
+        AdjustHealth(GetComponentInParent<Player>().GetCurrentHealth() / 100);
         name.text = "You are: " + GetComponentInParent<Player>().gameObject.name + " Currently: " + GetComponentInParent<Player>()._hunter;
     }
     void TogglePauseMenu()
