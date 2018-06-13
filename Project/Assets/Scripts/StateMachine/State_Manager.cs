@@ -97,10 +97,7 @@ public class State_Manager : NetworkBehaviour
 
     public void SwitchRoles()
     {
-        if (isServer)
-        {
-            CmdSwitchRoles();
-        }
+       CmdSwitchRoles();
     }
     public void CmdSetRoles()
     {
@@ -123,6 +120,9 @@ public class State_Manager : NetworkBehaviour
     [Command]
     public void Cmd_Switch_Roles_RPC()
     {
-        EventSwitchRoles_RPC();
+        if (isServer)
+        {
+            EventSwitchRoles_RPC();
+        }
     }
 }

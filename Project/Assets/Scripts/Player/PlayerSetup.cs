@@ -33,13 +33,18 @@ public class PlayerSetup : NetworkBehaviour {
 
     public override void OnStartClient()
     {
+
+        string _netID = GetComponent<NetworkIdentity>().netId.ToString();
+        Player _player = GetComponent<Player>();
+
+        GameManager.RegisterPlayer(_netID, _player);
+
         base.OnStartClient();
     }
 
     public override void OnStartLocalPlayer()
     {
         base.OnStartClient();
-        RegisterPlayer();
     }
 
     [Client]
@@ -47,7 +52,7 @@ public class PlayerSetup : NetworkBehaviour {
     {
         string _netID = GetComponent<NetworkIdentity>().netId.ToString();
         Player _player = GetComponent<Player>();
-        GameManager.RegisterPlayer(AppManager.instance.User.username, _player);
+        GameManager.RegisterPlayer(AppManager.instance.User.nickname, _player);
         
         //SCORE 
         //WebManager.instance.StartCoroutine("SetScore", 100);

@@ -16,15 +16,11 @@ public class RoleManager : NetworkBehaviour {
     {
         Debug.Log("SET TURNS");
         Dictionary<string, Player> tempplayers = GameManager.instance.GetPlayers();
-        bool hunteractive = false;
         foreach (KeyValuePair<string, Player> t in tempplayers)
         {
-            t.Value._hunter = (Random.value > 0.5f);
-            if (!hunteractive && t.Value._hunter == false)
+            if (t.Value.netId.Value == 3)
             {
-                Debug.Log("Set hunter active");
                 t.Value._hunter = true;
-                hunteractive = true;
             }
             else
             {
