@@ -4,31 +4,11 @@ using System.Collections;
 using UnityEngine.UI;
 public class Player : NetworkBehaviour {
 
+    [Header("User data:")]
     [SyncVar]
     public User User;
-    [SyncVar]
-    private bool _isDead = false;
 
-    [SerializeField]
-    [SyncVar]
-    private int score;
-    [SyncVar]
-    public bool _hunter = false;
-    [SerializeField]
-    [SyncVar]
-    public Class CurrentClass = Class.None;
-    public bool isDead
-    {
-        get
-        {
-            return _isDead;
-        }
-        protected set
-        {
-            _isDead = value;
-        }
-    }
-
+    [Header("Main values:")]
     [SerializeField]
     private float maxHealth = 100;
 
@@ -36,27 +16,48 @@ public class Player : NetworkBehaviour {
     [SyncVar]
     private float currentHealth;
 
+    [SyncVar]
+    private bool _isDead = false;
+    [SerializeField]
+    [SyncVar]
+    private int score;
+    [SyncVar]
+    public bool _hunter = false;
+
+    [SerializeField]
+    private Behaviour[] disableOnDeath;
+
+    private bool[] wasEnabled;
+
+    [Header("Graphic Components")]
     public Renderer rend;
     [SyncVar]
     public Color objectColor;
 
     private Canvas deathScreen;
+
     private Text deathTextmessage;
 
-    [SerializeField]
-    private Behaviour[] disableOnDeath;
-    private bool[] wasEnabled;
+
+    public bool isDead {
+        get {
+            return _isDead;
+        }
+        protected set {
+            _isDead = value;
+        }
+    }
+
     public void Setup()
     {
         deathTextmessage = GetComponentInChildren<Text>();
         deathScreen = GetComponentInChildren<Canvas>();
-        rend = GetComponent<Renderer>();
+
         wasEnabled = new bool[disableOnDeath.Length];
         for (int i = 0; i < wasEnabled.Length; i++)
         {
             wasEnabled[i] = disableOnDeath[i].enabled;
         }
-        objectColor = Color.red;
         SetDefaults();
     }
     public void AddScore(int _score)
@@ -65,17 +66,12 @@ public class Player : NetworkBehaviour {
     }
     void Update()
     {
-        if (!isLocalPlayer)
-            return;
     }
     public void SetDefaults()
     {
         deathScreen.transform.gameObject.SetActive(false);
         isDead = false;
         currentHealth = maxHealth;
-        //GetComponentInChildren<PlayerInterface>().AdjustHealth(currentHealth / 2000f);
-        rend.material.shader = Shader.Find("_Color");
-        rend.material.SetColor("_Color", objectColor);
         for (int i = 0; i < disableOnDeath.Length; i++)
         {
             disableOnDeath[i].enabled = wasEnabled[i];
@@ -95,6 +91,7 @@ public class Player : NetworkBehaviour {
     {
         if (_isDead)
             return;
+
         currentHealth -= _amount;
         Debug.Log("TOOK DAMAGE : " + _amount);
         Debug.Log("Was hit and took  " + _amount + " damage hit by " + name) ;
@@ -107,6 +104,7 @@ public class Player : NetworkBehaviour {
     private void Die(string name)
     {
         isDead = true;
+
         Player p = GameManager.GetPlayer(name);
         p.AddScore(1);
 
@@ -115,18 +113,22 @@ public class Player : NetworkBehaviour {
             disableOnDeath[i].enabled = false;
         }
         Collider _col = GetComponent<Collider>();
+
         if (_col != null)
             _col.enabled = false;
+        
         StartCoroutine("Respawn");
     }
 
     IEnumerator Respawn()
     {
         deathTextmessage.text = "You have been killed";
-        //MessageCenter.Message(transform.name + "has been killed by" + _hitby);
         deathScreen.transform.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(GameManager.instance.MatchSettings.respawnTime);
+
         SetDefaults();
+
         Transform _startPoint = NetworkManager.singleton.GetStartPosition();
         transform.position = _startPoint.position;
         transform.rotation = _startPoint.rotation;

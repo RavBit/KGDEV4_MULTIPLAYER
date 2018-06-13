@@ -20,15 +20,9 @@ public class PlayerShoot : NetworkBehaviour
     private LayerMask mask;
 
     [SerializeField]
-    private LayerMask LayerMask;
+    private LayerMask layerMask;
 
     private WeaponManager weaponManager;
-
-    [SerializeField]
-    private GameObject truck;
-
-    [SerializeField]
-    private float chargecounter;
 
     void Start()
     {
@@ -47,8 +41,9 @@ public class PlayerShoot : NetworkBehaviour
             return;
         if (Input.GetButton("Fire1"))
         {
+            if (!GetComponent<Player>()._hunter)
+                return;
             Shoot();
-            Debug.Log("SHOOT");
         }
         if(GetComponent<Player>()._hunter == false)
         {
@@ -62,15 +57,12 @@ public class PlayerShoot : NetworkBehaviour
     [Client]
     void Shoot()
     {
-        if (!GetComponent<Player>()._hunter)
-            return;
         RaycastHit _hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, 10, mask))
         {
             if (_hit.collider.tag == "Player")
             {
-                Debug.Log("Player hit: " + _hit.collider.name + " / HAS ROLE :" + _hit.collider.GetComponent<Player>().CurrentClass);
-                Debugtext.text = "Player hit: " + _hit.collider.name + " / HAS ROLE :" + _hit.collider.GetComponent<Player>().CurrentClass;
+                Debug.Log("SHOOT");
                 CmdPlayerShot(_hit.collider.name, currentWeapon.damage);
             }
         }
