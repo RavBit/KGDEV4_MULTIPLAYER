@@ -425,9 +425,5 @@ namespace Prototype.NetworkLobby
             //m_Text.text = "Client " + connection.connectionId + " Connected!";
         }
 
-        void test()
-        {
-           
-        }
     }
 }

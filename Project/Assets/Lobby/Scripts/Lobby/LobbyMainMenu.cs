@@ -11,6 +11,7 @@ namespace Prototype.NetworkLobby
 
         public RectTransform lobbyServerList;
         public RectTransform lobbyPanel;
+        public RectTransform SettingsPanel;
 
         public InputField ipInput;
         public InputField matchNameInput;
@@ -76,6 +77,13 @@ namespace Prototype.NetworkLobby
             lobbyManager.StartMatchMaker();
             lobbyManager.backDelegate = lobbyManager.SimpleBackClbk;
             lobbyManager.ChangeTo(lobbyServerList);
+        }
+
+        public void OnClickSettings()
+        {
+            lobbyManager.StartMatchMaker();
+            lobbyManager.backDelegate = lobbyManager.SimpleBackClbk;
+            lobbyManager.ChangeTo(SettingsPanel);
         }
 
         void onEndEditIP(string text)
