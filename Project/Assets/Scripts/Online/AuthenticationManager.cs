@@ -73,7 +73,7 @@ public class AuthenticationManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("user: " + user.email);
+                    Debug.Log("user: " + user.username);
                     //Login the user and redirect it to a new scene
                     LoginFeedback.text = "login successful.";
                     SceneManager.LoadScene("Lobby");
@@ -181,7 +181,7 @@ public class AuthenticationManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("user: " + user.email);
+                    Debug.Log("user: " + user.nickname);
                     //Login the user and redirect it to a new scene
                     LoginFeedback.text = "login successful.";
                     SceneManager.LoadScene("Lobby");
@@ -213,7 +213,7 @@ public class User
 {
     public bool success;
     public string error;
-    public string email;
+    public string nickname;
     public string username;
     public int ID;
     public string session;

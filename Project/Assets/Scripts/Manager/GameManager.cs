@@ -49,14 +49,3 @@ public class GameManager : MonoBehaviour {
 
     #endregion
 }
-
-
-
-//Relocate this ENUM
-
-public enum Class
-{
-    None,
-    Hunter,
-    Chaser
-}
