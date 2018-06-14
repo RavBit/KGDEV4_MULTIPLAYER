@@ -47,7 +47,10 @@ public class Player : NetworkBehaviour {
             _isDead = value;
         }
     }
-
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
     public void Setup()
     {
         deathTextmessage = GetComponentInChildren<Text>();
@@ -64,9 +67,7 @@ public class Player : NetworkBehaviour {
     {
         score = score + _score;
     }
-    void Update()
-    {
-    }
+
     public void SetDefaults()
     {
         deathScreen.transform.gameObject.SetActive(false);
