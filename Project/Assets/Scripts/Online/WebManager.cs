@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class WebManager : MonoBehaviour
+using UnityEngine.UI;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
+public class WebManager : NetworkBehaviour
 {
+
     public static WebManager instance;
 
+
+    public GameObject EndScreen;
     // Makes sure the App_Manager does not get destroyed & Singleton 
     void Awake()
     {
@@ -15,20 +20,30 @@ public class WebManager : MonoBehaviour
             instance = this;
         DontDestroyOnLoad(transform.gameObject);
     }
+
+    public void EnableEndScreen()
+    {
+        EndScreen.SetActive(true);
+    }
+
+    public void Set_Score()
+    {
+        StartCoroutine("SetScore", AppManager.instance.Score);
+    }
     //Corountine that goes through the Login process
-    public IEnumerator SetScore(int score)
+    public IEnumerator SetScore(float score)
     {
         WWWForm score_form = new WWWForm();
         score_form.AddField("session_id", AppManager.instance.User.session);
-        score_form.AddField("score", 45);
+        score_form.AddField("score", (int)score);
         Debug.Log("http://81.169.177.181/KGDEV4/register_score.php?PHPSESSID=" + AppManager.instance.User.session);
         WWW owneditemsdata = new WWW("http://81.169.177.181/KGDEV4/register_score.php", score_form);
             yield return owneditemsdata;
 
             if (string.IsNullOrEmpty(owneditemsdata.error))
             {
-                Debug.Log("Gelukt denk ik? " + owneditemsdata.text);
-                Debug.Log("test: " + owneditemsdata.error);
+                Cursor.lockState = CursorLockMode.None;
+                SceneManager.LoadScene("Lobby");
             }
             else
             {

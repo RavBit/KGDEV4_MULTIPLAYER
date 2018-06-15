@@ -8,6 +8,7 @@ public class AppManager : MonoBehaviour
     public static AppManager instance;
     [Header("User that's logged in")]
     public User User;
+    public float Score;
 
     // Makes sure the App_Manager does not get destroyed & Singleton 
     void Awake()

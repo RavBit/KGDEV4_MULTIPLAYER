@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
-//delete later
 using UnityEngine.UI;
 
 [RequireComponent(typeof(WeaponManager))]

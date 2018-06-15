@@ -66,8 +66,13 @@ public class Player : NetworkBehaviour {
     public void AddScore(int _score)
     {
         score = score + _score;
+        AppManager.instance.Score = score;
     }
 
+    public float GetScore()
+    {
+        return score;
+    }
     public void SetDefaults()
     {
         deathScreen.transform.gameObject.SetActive(false);
@@ -94,8 +99,6 @@ public class Player : NetworkBehaviour {
             return;
 
         currentHealth -= _amount;
-        Debug.Log("TOOK DAMAGE : " + _amount);
-        Debug.Log("Was hit and took  " + _amount + " damage hit by " + name) ;
         if (currentHealth <= 0)
         {
           Die(name);

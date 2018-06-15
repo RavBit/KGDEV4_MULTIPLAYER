@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour {
     }
     public static void LockCursor()
     {
-        /*Cursor.visible = !Cursor.visible;
+        Cursor.visible = !Cursor.visible;
         if (Cursor.visible)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -73,6 +73,6 @@ public class PlayerController : MonoBehaviour {
         {
             Cursor.lockState = CursorLockMode.None;
             return;
-        }*/
+        }
     }
 }

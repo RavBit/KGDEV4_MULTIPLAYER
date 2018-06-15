@@ -24,7 +24,7 @@ public class State_Manager : NetworkBehaviour
     public static event RoleRandomizer EventRandomizeRoles_RPC;
     [SyncEvent]
     public static event RoleRandomizer EventSwitchRoles_RPC;
-    
+
 
 
     //[SyncVar]
@@ -125,4 +125,5 @@ public class State_Manager : NetworkBehaviour
             EventSwitchRoles_RPC();
         }
     }
+
 }

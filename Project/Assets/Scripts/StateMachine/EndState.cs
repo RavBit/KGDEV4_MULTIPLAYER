@@ -50,12 +50,13 @@ public class EndState : State<State_Manager>
             if (!SecondTurn)
             {
                 SecondTurn = true;
-                _owner.ChangeState(PrepareState.Instance);
+                _owner.stateMachine.ChangeState(PrepareState.Instance);
                 Debug.Log("Going Second turn");
                 return;
             }
+            WebManager.instance.EnableEndScreen();
             Time.timeScale = 0;
-            Debug.Log("End of the Game");
+            return;
         }
     }
 }
