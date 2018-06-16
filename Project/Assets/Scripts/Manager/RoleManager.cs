@@ -11,6 +11,8 @@ public class RoleManager : NetworkBehaviour {
         State_Manager.EventSwitchRoles_RPC += RpcSwitchTurns;
     }
 
+
+    //Set roles of the player
     [ClientRpc]
     public void RpcSetTurns()
     {
@@ -30,6 +32,7 @@ public class RoleManager : NetworkBehaviour {
         }
     }
 
+    //Switch the turns of the players
     [ClientRpc]
     public void RpcSwitchTurns()
     {

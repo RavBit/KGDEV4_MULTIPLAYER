@@ -53,6 +53,8 @@ public class PlayerShoot : NetworkBehaviour
             GetComponent<WeaponManager>().weaponHolder.gameObject.SetActive(true);
         }
     }
+
+    //Player shoots and function triggered on client
     [Client]
     void Shoot()
     {
@@ -67,10 +69,13 @@ public class PlayerShoot : NetworkBehaviour
         }
     }
 
+    //Set the currentweapon the player has
     private void setCurrentWeapon()
     {
         currentWeapon = weaponManager.GetCurrentWeapon();
     }
+
+    //Command that's called on client and will continue to the player that has been hit
     [Command]
     void CmdPlayerShot(string player, int damage)
     {

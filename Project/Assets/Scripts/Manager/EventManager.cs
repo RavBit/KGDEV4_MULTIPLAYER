@@ -9,6 +9,7 @@ public class EventManager : NetworkBehaviour {
 
     public static event CheckWeapon WeaponCheck;
 
+    //Event to check weapons which is static
     public static void Weapon_Check()
     {
         WeaponCheck();

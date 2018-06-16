@@ -63,16 +63,20 @@ public class Player : NetworkBehaviour {
         }
         SetDefaults();
     }
+
+    //Adding score and adding it to the appmanager
     public void AddScore(int _score)
     {
         score = score + _score;
         AppManager.instance.Score = score;
     }
-
+    //Get the score
     public float GetScore()
     {
         return score;
     }
+
+    //Set default and enable objects that will intefear with eachother
     public void SetDefaults()
     {
         deathScreen.transform.gameObject.SetActive(false);
@@ -87,11 +91,15 @@ public class Player : NetworkBehaviour {
         if (_col != null)
             _col.enabled = true;
     }
+
+    //Start game and check weapon
     public void InitStartGame()
     {
         EventManager.Weapon_Check();
     }
 
+
+    //Take damage and only run it on the server
     [ClientRpc]
     public void RpcTakeDamage(int _amount, string name)
     {
@@ -105,6 +113,8 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
+    //Die if you're health is 0. Also enable to know who killed you
     private void Die(string name)
     {
         isDead = true;
@@ -124,6 +134,8 @@ public class Player : NetworkBehaviour {
         StartCoroutine("Respawn");
     }
 
+
+    //Respawn with time from the match settings
     IEnumerator Respawn()
     {
         deathTextmessage.text = "You have been killed";

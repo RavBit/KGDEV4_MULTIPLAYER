@@ -17,21 +17,6 @@ public class GameSwitch_Manager : NetworkBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-        test++;
         UItext.text = "" + SM.stateMachine.currentState.ReturnText() + SM.stateMachine.currentState.seconds;
-        if((test % 100) == 0)
-        {
-            if (isServer)
-            {
-                RpcTest();
-            }
-        }
-    }
-
-
-    [ClientRpc]
-    void RpcTest()
-    {
-        testsound.Play();
     }
 }

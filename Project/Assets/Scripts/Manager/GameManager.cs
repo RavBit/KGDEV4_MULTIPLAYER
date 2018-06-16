@@ -39,10 +39,6 @@ public class GameManager : MonoBehaviour {
         return players[_playerID];
     }
 
-    public static void StartStates()
-    {
-        
-    }
     #endregion
 
     #region Match Settings

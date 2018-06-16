@@ -20,10 +20,6 @@ public class PlayerInterface : MonoBehaviour {
 	void Start () {
         PauseMenu.isOn = false;
 	}
-    public void AdjustNeedle(float force)
-    {
-        forceFill.localScale = new Vector3(1f, force, 1f);
-    }
     public void AdjustHealth(float health)
     {
         healthFill.localScale = new Vector3(1f, health, 1f);
@@ -35,8 +31,10 @@ public class PlayerInterface : MonoBehaviour {
             TogglePauseMenu();
         }
         AdjustHealth(GetComponentInParent<Player>().GetCurrentHealth() / 100);
-        name.text = "You are: " + GetComponentInParent<Player>().gameObject.name + " Currently: " + GetComponentInParent<Player>()._hunter;
+        name.text = "You are: " + GetComponentInParent<Player>().gameObject.name + " Hunter: " + GetComponentInParent<Player>()._hunter;
     }
+
+    //Toggle Pause
     void TogglePauseMenu()
     {
         pauseMenu.SetActive(!pauseMenu.activeSelf);

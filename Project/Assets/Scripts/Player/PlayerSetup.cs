@@ -54,8 +54,6 @@ public class PlayerSetup : NetworkBehaviour {
         Player _player = GetComponent<Player>();
         GameManager.RegisterPlayer(AppManager.instance.User.nickname, _player);
         
-        //SCORE 
-        //WebManager.instance.StartCoroutine("SetScore", 100);
     }
     void DisableComponents()
     {

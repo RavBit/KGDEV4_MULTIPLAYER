@@ -30,7 +30,7 @@ public class PlayState : State<State_Manager>
     }
     public override void EnterState(State_Manager _owner)
     {
-        seconds = 10;
+        seconds = 60;
         if (EndState.Instance.SecondTurn == false)
         {
             _owner.SetRoles();

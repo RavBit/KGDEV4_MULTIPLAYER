@@ -30,7 +30,7 @@ public class EndState : State<State_Manager>
     }
     public override void EnterState(State_Manager _owner)
     {
-        seconds = 10;
+        seconds = 3;
         Debug.Log("Entering End State");
     }
 

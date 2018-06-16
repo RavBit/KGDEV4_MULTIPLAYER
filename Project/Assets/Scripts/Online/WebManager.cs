@@ -30,7 +30,7 @@ public class WebManager : NetworkBehaviour
     {
         StartCoroutine("SetScore", AppManager.instance.Score);
     }
-    //Corountine that goes through the Login process
+    //Corountine that goes through the Score proccess
     public IEnumerator SetScore(float score)
     {
         WWWForm score_form = new WWWForm();

@@ -26,11 +26,6 @@ public class State_Manager : NetworkBehaviour
     public static event RoleRandomizer EventSwitchRoles_RPC;
 
 
-
-    //[SyncVar]
-    //private State<State_Manager> newState;
-
-
     public StateMachine<State_Manager> stateMachine { get; set; }
     private void Start()
     {
@@ -39,20 +34,10 @@ public class State_Manager : NetworkBehaviour
         stateMachine = new StateMachine<State_Manager>(this);
         stateMachine.ChangeState(PrepareState.Instance);
         seconds = stateMachine.currentState.seconds;
-        //Debug.Log("State seconds" + stateMachine.currentState.seconds);
         gameTimer = Time.time;
-        //EventGet += ChangeState;
-    }
-    public void ChangeTurn()
-    {
-        if(!isServer)
-        {
-            return;
-        }
-        stateMachine.ChangeState(PlayState.Instance);
-        seconds = stateMachine.currentState.seconds;
     }
 
+    //Change state to new state
     public void ChangeState(State<State_Manager> _state)
     {
         if(!isServer)
@@ -63,16 +48,21 @@ public class State_Manager : NetworkBehaviour
         CmdChangeState();
     }
 
+    //CDommand to change the state
     [Command]
     public void CmdChangeState()
     {
         RpcChangeState();
     }
+
+    //Change the state on all clients
     [ClientRpc]
     public void RpcChangeState()
     {
         stateMachine.ChangeState(changeState);
     }
+
+    //Update and count the timer
     private void Update()
     {
         Debug.Log(stateMachine.currentState);
@@ -81,12 +71,12 @@ public class State_Manager : NetworkBehaviour
             gameTimer = Time.time;
             stateMachine.currentState.seconds--;
             seconds = stateMachine.currentState.seconds;
-            //Debug.Log("Seconds " + seconds);
         }
         UItext.text = "" + stateMachine.currentState.ReturnText() + stateMachine.currentState.seconds;
         stateMachine.Update();
     }
 
+    //Set roles
     public void SetRoles()
     {
         if (isServer)
@@ -99,16 +89,18 @@ public class State_Manager : NetworkBehaviour
     {
        CmdSwitchRoles();
     }
+
+    //Command to set roles
     public void CmdSetRoles()
     {
         Cmd_Randomize_Roles_RPC();
-        Debug.Log("test");
     }
 
+
+    //Command to switch roles
     public void CmdSwitchRoles()
     {
         Cmd_Switch_Roles_RPC();
-        Debug.Log("test");
     }
 
     [Command]
